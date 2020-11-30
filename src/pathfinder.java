@@ -10,7 +10,7 @@ public class pathfinder extends Graph{
     HashSet<String> cities; //List of all cities used for the visited iterator
     Graph graph; //Holds the Edges/Vertices and the Adjacency List
     int milesTravelled; //Total distance travelled
-    int timeTaken;
+    int timeTaken; //Total time taken
 
     public pathfinder() {
         allAttractions = new Hashtable<>(143);
@@ -150,6 +150,11 @@ public class pathfinder extends Graph{
     }
 
     private String least_cost_unknown_vertex() {
+        /* The first iteration will take the 0-cost node for start location
+           Subsequent ones will properly update to the node which has less distance
+           And has not been visited yet (false)
+         */
+
         String vertex = "";
         int min = Integer.MAX_VALUE;
 
@@ -169,6 +174,15 @@ public class pathfinder extends Graph{
     }
 
     public int edge_weight(String v1, String v2) {
+        /* The weight of focus is distance between locations
+           All of the roads represent an edge since they have
+           a vertex and a second vertex connected by distance.
+           All of these edges are stored in the Graph, and each
+           edge in the graph is checked to return the weight between
+           the two vertices, regardless of the order they occur in the edge.
+
+           e.g. Redding CA --> Medford OR edge or Medford OR --> Redding CA
+         */
         int weight = 0;
         for (Edge edge : graph.edges) {
             if (edge.first.equals(v1) && edge.second.equals(v2)) {
@@ -182,6 +196,10 @@ public class pathfinder extends Graph{
     }
 
     public int edge_time(String v1, String v2) {
+        /* This is not necessary for the final determination.
+           I am including this because the data was stored and
+           should be used to provide info
+         */
         int time = 0;
         for (Edge edge : graph.edges) {
             if (edge.first.equals(v1) && edge.second.equals(v2)) {
@@ -199,8 +217,6 @@ public class pathfinder extends Graph{
         System.out.println("The total distance travelled: " + milesTravelled + " miles");
         System.out.println("The time taken for the trip: " + timeTaken + " minutes");
     }
-
-
 
     public static void main(String args[]) throws FileNotFoundException {
         pathfinder pf = new pathfinder();
