@@ -7,3 +7,6 @@ we parse these files and store them in a Graph. From there, we enter a start loc
 function to use a modified Dijkstra's algorithm to find the shortest path from the start, all of the chosen attractions, and the end location.
 
 The end output is a List<String> of all City State locations in order, along with the distance travelled in miles and the time taken in minutes.
+
+
+pathfinder is the main class.
