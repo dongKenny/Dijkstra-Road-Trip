@@ -35,6 +35,11 @@ public class pathfinder extends Graph{
 
         ArrayList<String> path = new ArrayList<>();
 
+        if (start_location.isBlank() || end_location.isBlank()) {
+            System.out.println("Start or end location blank");
+            return path;
+        }
+
         graph.addEdge(start_location, start_location, 0, 0);
 
         for (String city : cities) {
