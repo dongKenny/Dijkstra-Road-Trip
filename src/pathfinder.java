@@ -23,6 +23,31 @@ public class pathfinder extends Graph{
         timeTaken = 0;
     }
 
+    public void Dijkstra(String locationOfInterest) {
+        for (String city : cities) {
+            if (city != null) {
+                visited.put(city, false);
+                distance.put(city, Integer.MAX_VALUE);
+            }
+        }
+
+        distance.put(locationOfInterest, 0);
+
+        for (String city : cities) {
+            while (!visited.get(city)) {
+                String vertex = least_cost_unknown_vertex();
+                known(vertex);
+                for (String v : graph.adjacencyList.get(vertex)) {
+                    int weight = edge_weight(vertex, v);
+                    if (distance.get(v) > distance.get(vertex) + weight && !v.equals(vertex)) { //Vertex's cost greater, update
+                        distance.put(v, distance.get(vertex) + weight);
+                        previous.put(v, vertex);
+                    }
+                }
+            }
+        }
+    }
+
     List<String> route(String start_location, String end_location, List<String> attractions) {
         /* The path will hold the final route from start_location to attractions to end_location
            I initialize the visited hashtable with false values for each city
@@ -40,30 +65,7 @@ public class pathfinder extends Graph{
             return path;
         }
 
-        graph.addEdge(start_location, start_location, 0, 0);
-
-        for (String city : cities) {
-            if (city != null) {
-                visited.put(city, false);
-                distance.put(city, Integer.MAX_VALUE);
-            }
-        }
-
-        distance.put(start_location, 0);
-
-        for (String city : cities) {
-            while (!visited.get(city)) {
-                String vertex = least_cost_unknown_vertex();
-                known(vertex);
-                for (String v : graph.adjacencyList.get(vertex)) {
-                    int weight = edge_weight(vertex, v);
-                    if (distance.get(v) > distance.get(vertex) + weight && !v.equals(vertex)) { //Vertex's cost greater, update
-                        distance.put(v, distance.get(vertex) + weight);
-                        previous.put(v, vertex);
-                    }
-                }
-            }
-        }
+        Dijkstra(start_location);
 
         /* I take the distances of each attraction location relative to the initial start location
            From there, I place them in an array and as keys in a Hashtable
@@ -103,7 +105,7 @@ public class pathfinder extends Graph{
             String nextVertex = attractionsRanked.get(i + 1);
             String nextVertexTemp = attractionsRanked.get(i + 1);
 
-            stitch.add(nextVertex);
+            //stitch.add(nextVertex);
             while (!current.equals(nextVertex)) {
                 String prevCity = previous.get(nextVertex);
 
@@ -127,28 +129,7 @@ public class pathfinder extends Graph{
             previous = new Hashtable<>();
             distance = new Hashtable<>();
 
-            for (String city : cities) {
-                if (city != null) {
-                    visited.put(city, false);
-                    distance.put(city, Integer.MAX_VALUE);
-                }
-            }
-
-            distance.put(nextVertexTemp, 0);
-
-            for (String city : cities) {
-                while (!visited.get(city)) {
-                    String vertex = least_cost_unknown_vertex();
-                    known(vertex);
-                    for (String v : graph.adjacencyList.get(vertex)) {
-                        int weight = edge_weight(vertex, v);
-                        if (distance.get(v) > distance.get(vertex) + weight && !v.equals(vertex)) {
-                            distance.put(v, distance.get(vertex) + weight);
-                            previous.put(v, vertex);
-                        }
-                    }
-                }
-            }
+            Dijkstra(nextVertexTemp);
         }
 
         return path;
