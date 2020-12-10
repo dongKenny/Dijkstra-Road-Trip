@@ -24,6 +24,12 @@ public class pathfinder extends Graph{
     }
 
     public void Dijkstra(String locationOfInterest) {
+        /* I initialize the visited hashtable with false values for each city
+           I initialize the distances for each city by setting their values to essentially infinity
+           Introduce the start_location as a 0 vertex
+           Use Dijkstra's to visit each city/state.
+         */
+        
         for (String city : cities) {
             if (city != null) {
                 visited.put(city, false);
@@ -50,11 +56,6 @@ public class pathfinder extends Graph{
 
     List<String> route(String start_location, String end_location, List<String> attractions) {
         /* The path will hold the final route from start_location to attractions to end_location
-           I initialize the visited hashtable with false values for each city
-           I initialize the distances for each city by setting their values to essentially infinity
-           Introduce the start_location as a 0 vertex
-           Use Dijkstra's to visit each city/state.
-
            Initial Dijkstra's algorithm --> Repeat Dijkstra's + add distance travelled
          */
 
