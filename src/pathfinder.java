@@ -242,6 +242,7 @@ public class pathfinder extends Graph{
                     String start = roadData[0].replace("\n", "");
                     String end = roadData[1];
                     int miles = Integer.parseInt(roadData[2]);
+                    //Corrects an incorrect value in the csv
                     if (roadData[3].equals("10a")) {
                         roadData[3] = "101";
                     }
